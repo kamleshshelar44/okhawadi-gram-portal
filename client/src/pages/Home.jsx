@@ -1,0 +1,319 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Calendar, MapPin, Users, BookOpen, Droplets, School, Award, Clock, ArrowRight, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import api from '../utils/axios';
+
+const Home = () => {
+  const { t } = useTranslation();
+  const [villageInfo, setVillageInfo] = useState(null);
+  const [news, setNews] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchHomeData();
+  }, []);
+
+  const fetchHomeData = async () => {
+    try {
+      const [villageRes, newsRes, galleryRes, contactsRes] = await Promise.all([
+        api.get('/village'),
+        api.get('/news?limit=3'),
+        api.get('/gallery?limit=6'),
+        api.get('/contacts'),
+      ]);
+
+      setVillageInfo(villageRes.data.data);
+      setNews(newsRes.data.data);
+      setGallery(galleryRes.data.data);
+      setContacts(contactsRes.data.data);
+    } catch (error) {
+      console.error('Error fetching home data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <section className="relative h-[500px] bg-gradient-to-r from-primary-700 to-primary-900">
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute inset-0">
+          <img
+            src="../../../Images/ok.jpg"
+            alt="Village Temple"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-3xl text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {t('home.welcome')}
+            </h1>
+            <p className="text-xl mb-8 leading-relaxed">
+              {villageInfo?.description || t('home.villageIntro')}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/about"
+                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
+              >
+                {t('navigation.about')}
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+              <Link
+                to="/contact"
+                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-700 transition-colors"
+              >
+                {t('home.contactUs')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Village Stats */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <Users className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {villageInfo?.population || '800'}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.population')}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <BookOpen className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {villageInfo?.literacyRate || '87.5'}%
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.literacyRate')}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <MapPin className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {villageInfo?.area || '12.4'}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.area')}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <Droplets className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {villageInfo?.waterSources?.length || 3}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.waterSources')}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <School className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {villageInfo?.schools?.length || 1}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.schools')}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
+              <Award className="w-8 h-8 text-primary-600 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                12+
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {t('home.awards')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Panchayat Contacts */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              {t('home.panchayatContacts')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              महत्त्वाच्या पदाधिकाऱ्यांशी संपर्क साधा
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {contacts.slice(0, 3).map((contact) => (
+              <div key={contact._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                    <Users className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white">
+                      {contact.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {contact.position}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {contact.phone && (
+                    <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Phone className="w-4 h-4" />
+                      <span>{contact.phone}</span>
+                    </div>
+                  )}
+                  {contact.email && (
+                    <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Mail className="w-4 h-4" />
+                      <span>{contact.email}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest News */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                {t('home.latestNews')}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                अलीकडील घडामोडी आणि महत्त्वाच्या सूचना
+              </p>
+            </div>
+            <Link
+              to="/news"
+              className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center"
+            >
+              {t('common.viewAll')}
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {news.map((item) => (
+              <article key={item._id} className="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden">
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full">
+                      {item.category}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(item.date).toLocaleDateString('mr-IN')}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+                    {item.content}
+                  </p>
+                  <Link
+                    to={`/news/${item._id}`}
+                    className="text-primary-600 hover:text-primary-700 text-sm font-semibold"
+                  >
+                    {t('common.readMore')} →
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                {t('home.photoGallery')}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                गावाच्या सुंदर दृश्यांचा संग्रह
+              </p>
+            </div>
+            <Link
+              to="/gallery"
+              className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center"
+            >
+              {t('common.viewAll')}
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {gallery.map((item) => (
+              <div key={item._id} className="relative group overflow-hidden rounded-lg">
+                <img
+                  src={item.url || 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400'}
+                  alt={item.title}
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <p className="text-white text-xs text-center px-2">{item.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-primary-600">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            ग्रामपंचायतेच्या विकास कामांत सहभागी व्हा
+          </h2>
+          <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
+            आमच्या गावाच्या विकासासाठी आपले मौल्यवान सूचन आणि सहकार्य आपल्याला नेहमीच लागते.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/complaints"
+              className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              {t('services.complaintsRequests')}
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors"
+            >
+              {t('home.contactUs')}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;
