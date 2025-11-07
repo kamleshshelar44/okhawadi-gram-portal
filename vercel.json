@@ -8,5 +8,6 @@
     { "src": "/api/(.*)", "dest": "server/server.js" },
     { "src": "/(.*)", "dest": "client/dist/index.html" }
   ],
-  "buildCommand": "cd client && npm install && npm run build && cd .. && cd server && npm install"
+  "buildCommand": "cd client && npm install && npm run build && cd .. && cd server && npm install",
+  "outputDirectory": "client/dist"
 }
