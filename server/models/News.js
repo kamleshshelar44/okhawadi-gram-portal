@@ -5,9 +5,30 @@ const newsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title_mr: {
+    type: String,
+  },
+  title_hi: {
+    type: String,
+  },
   content: {
     type: String,
     required: true,
+  },
+  content_mr: {
+    type: String,
+  },
+  content_hi: {
+    type: String,
+  },
+  summary: {
+    type: String,
+  },
+  summary_mr: {
+    type: String,
+  },
+  summary_hi: {
+    type: String,
   },
   category: {
     type: String,

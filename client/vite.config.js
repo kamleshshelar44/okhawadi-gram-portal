@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig(({ mode }) => {
-  // Load .env variables based on current mode (development/production)
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
@@ -21,6 +20,10 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
+    },
+    build: {
+      outDir: 'dist', // ✅ ensures Vercel knows where static files are
+      emptyOutDir: true, // ✅ cleans the dist folder before each build
     },
     define: {
       __APP_ENV__: env.APP_ENV,

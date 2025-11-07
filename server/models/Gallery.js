@@ -5,6 +5,12 @@ const gallerySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title_mr: {
+    type: String,
+  },
+  title_hi: {
+    type: String,
+  },
   type: {
     type: String,
     enum: ['image', 'video'],
@@ -23,6 +29,12 @@ const gallerySchema = new mongoose.Schema({
     default: 'village',
   },
   description: {
+    type: String,
+  },
+  description_mr: {
+    type: String,
+  },
+  description_hi: {
     type: String,
   },
   date: {

@@ -50,7 +50,13 @@ const getProjectById = async (req, res) => {
 
 const createProject = async (req, res) => {
   try {
-    const project = await Project.create(req.body);
+    const projectData = req.body;
+
+    if (req.files && req.files.length > 0) {
+      projectData.images = req.files.map(file => `/uploads/${file.filename}`);
+    }
+
+    const project = await Project.create(projectData);
 
     res.status(201).json({
       success: true,
@@ -63,9 +69,15 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
+    const updateData = req.body;
+
+    if (req.files && req.files.length > 0) {
+      updateData.images = req.files.map(file => `/uploads/${file.filename}`);
+    }
+
     const project = await Project.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 

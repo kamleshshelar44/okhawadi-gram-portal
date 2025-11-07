@@ -33,7 +33,13 @@ const getContactById = async (req, res) => {
 
 const createContact = async (req, res) => {
   try {
-    const contact = await Contact.create(req.body);
+    const contactData = req.body;
+
+    if (req.file) {
+      contactData.image = `/uploads/${req.file.filename}`;
+    }
+
+    const contact = await Contact.create(contactData);
 
     res.status(201).json({
       success: true,
@@ -46,9 +52,15 @@ const createContact = async (req, res) => {
 
 const updateContact = async (req, res) => {
   try {
+    const updateData = req.body;
+
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
+    }
+
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 

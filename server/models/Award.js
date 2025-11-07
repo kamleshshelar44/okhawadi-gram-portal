@@ -5,9 +5,21 @@ const awardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title_mr: {
+    type: String,
+  },
+  title_hi: {
+    type: String,
+  },
   description: {
     type: String,
     required: true,
+  },
+  description_mr: {
+    type: String,
+  },
+  description_hi: {
+    type: String,
   },
   category: {
     type: String,
@@ -19,6 +31,12 @@ const awardSchema = new mongoose.Schema({
     required: true,
   },
   organization: {
+    type: String,
+  },
+  organization_mr: {
+    type: String,
+  },
+  organization_hi: {
     type: String,
   },
   image: {

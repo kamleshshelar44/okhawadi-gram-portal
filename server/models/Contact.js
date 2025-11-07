@@ -9,7 +9,19 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  position_mr: {
+    type: String,
+  },
+  position_hi: {
+    type: String,
+  },
   department: {
+    type: String,
+  },
+  department_mr: {
+    type: String,
+  },
+  department_hi: {
     type: String,
   },
   phone: {
@@ -19,6 +31,12 @@ const contactSchema = new mongoose.Schema({
     type: String,
   },
   address: {
+    type: String,
+  },
+  address_mr: {
+    type: String,
+  },
+  address_hi: {
     type: String,
   },
   image: {

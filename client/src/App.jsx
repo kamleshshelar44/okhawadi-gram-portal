@@ -24,6 +24,7 @@ import Forms from './pages/Forms';
 import RTI from './pages/RTI';
 import Complaints from './pages/Complaints';
 import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 import Events from './pages/Events';
 import Gallery from './pages/Gallery';
 import Videos from './pages/Videos';
@@ -72,6 +73,7 @@ function App() {
             <Route path="rti" element={<RTI />} />
             <Route path="complaints" element={<Complaints />} />
             <Route path="news" element={<News />} />
+            <Route path="news/:id" element={<NewsDetail />} />
             <Route path="events" element={<Events />} />
             <Route path="gallery" element={<Gallery />} />
             <Route path="videos" element={<Videos />} />

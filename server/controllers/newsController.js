@@ -47,7 +47,13 @@ const getNewsById = async (req, res) => {
 
 const createNews = async (req, res) => {
   try {
-    const news = await News.create(req.body);
+    const newsData = req.body;
+
+    if (req.file) {
+      newsData.image = `/uploads/${req.file.filename}`;
+    }
+
+    const news = await News.create(newsData);
 
     res.status(201).json({
       success: true,
@@ -60,9 +66,15 @@ const createNews = async (req, res) => {
 
 const updateNews = async (req, res) => {
   try {
+    const updateData = req.body;
+
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
+    }
+
     const news = await News.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 

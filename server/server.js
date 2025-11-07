@@ -16,6 +16,7 @@ const newsRoutes = require('./routes/news');
 const projectRoutes = require('./routes/projects');
 const galleryRoutes = require('./routes/gallery');
 const contactRoutes = require('./routes/contacts');
+const awardRoutes = require('./routes/awards');
 
 const app = express();
 
@@ -25,7 +26,7 @@ connectDB();
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 1000 requests per windowMs (increased for development)
 });
 
 // Middleware
@@ -46,6 +47,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/contacts', contactRoutes);
+app.use('/api/awards', awardRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
