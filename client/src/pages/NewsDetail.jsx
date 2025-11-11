@@ -80,7 +80,7 @@ const NewsDetail = () => {
           {news.image && (
             <div className="w-full h-64 md:h-96 bg-gray-200 dark:bg-gray-700">
               <img
-                src={`http://localhost:5001${news.image}`}
+                src={news.image}
                 alt={news.title_mr || news.title}
                 className="w-full h-full object-cover"
                 onError={(e) => {

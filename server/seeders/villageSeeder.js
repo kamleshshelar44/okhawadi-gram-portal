@@ -30,7 +30,7 @@ const seedVillageData = async () => {
       parliamentMP: 'Shrimant Chh. Udayanraje Pratapsinhmaharaj Bhosale',
       sarpanch: 'Kausalya Laxman Shelar',
       mapLink: 'https://maps.app.goo.gl/Q6WzhrChjYEhK6Tm9',
-      population: 2150,
+      population: 439,
       literacyRate: 87.5,
       area: 12.4,
       waterSources: ['Well', 'Borewell', 'Pipeline'],

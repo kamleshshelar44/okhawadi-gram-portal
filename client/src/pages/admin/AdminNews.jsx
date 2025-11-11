@@ -37,6 +37,8 @@ const AdminNews = () => {
     category: 'news',
     image: null
   });
+  console.log(formData,"formData");
+  
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState('');
 
@@ -419,6 +421,17 @@ const AdminNews = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
+               <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  सारांश (हिंदी)
+                </label>
+                <textarea
+                  value={formData.summary_hi}
+                  onChange={(e) => setFormData({...formData, summary_hi: e.target.value})}
+                  rows="3"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+              </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -479,7 +492,11 @@ const AdminNews = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
+                  onChange={(e) =>  {
+                    setFormData({...formData, image: e.target.files[0]})
+                    console.log(e.target.files[0]);
+                    
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>

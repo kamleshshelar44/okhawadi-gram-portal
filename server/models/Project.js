@@ -40,9 +40,9 @@ const projectSchema = new mongoose.Schema({
   endDate: {
     type: Date,
   },
-  images: [{
+  image: {
     type: String,
-  }],
+  },
   progress: {
     type: Number,
     default: 0,

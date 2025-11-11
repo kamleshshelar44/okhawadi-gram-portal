@@ -44,7 +44,14 @@ const News = () => {
                 <div className="md:flex">
                   <div className="md:shrink-0">
                     <div className="h-48 w-full object-cover md:h-full md:w-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                      <span className="text-gray-400">No Image</span>
+                     { item.image? <img
+                src={item.image}
+                alt={item.title_mr || item.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="16" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+                }}
+              />:<span className="text-gray-400">No Image</span>}
                     </div>
                   </div>
                   <div className="p-8">

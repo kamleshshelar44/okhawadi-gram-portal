@@ -36,24 +36,38 @@ const Gallery = () => {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
           {t('gallery.photoGallery')}
         </h1>
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {gallery.length > 0 ? (
             gallery.map((item) => (
-              <div key={item._id} className="group relative overflow-hidden rounded-lg">
-                <img
-                  src={item.url || 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400'}
-                  alt={item.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+              <div
+                key={item._id}
+                className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
+              >
+                {/* ✅ Conditional Rendering */}
+                {item.type === 'video' ? (
+                  <video
+                    src={item.url}
+                    controls
+                    className="w-full h-48 object-cover"
+                  />
+                ) : (
+                  <img
+                    src={item.url}
+                    alt={item.title}
+                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                )}
+
+                {/* <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
                   <p className="text-white text-xs text-center">{item.title}</p>
-                </div>
+                </div> */}
               </div>
             ))
           ) : (
             <div className="col-span-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <p className="text-gray-600 dark:text-gray-400">
-                सध्या गॅलरीमध्ये कोणतेही फोटो आढळले नाहीत.
+                सध्या गॅलरीमध्ये कोणतेही फोटो किंवा व्हिडिओ आढळले नाहीत.
               </p>
             </div>
           )}

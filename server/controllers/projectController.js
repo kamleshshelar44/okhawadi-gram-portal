@@ -2,7 +2,7 @@ const Project = require('../models/Project');
 
 const getProjects = async (req, res) => {
   try {
-    const { page = 1, limit = 10, category, status } = req.query;
+    const { page = 1, limit = 10, category, status, lang = 'en' } = req.query;
 
     const query = { isActive: true };
     if (category) {
@@ -19,9 +19,26 @@ const getProjects = async (req, res) => {
 
     const total = await Project.countDocuments(query);
 
+    // Localize the response based on language
+    const localizedProjects = projects.map(project => ({
+      _id: project._id,
+      title: project[`title_${lang}`] || project.title,
+      description: project[`description_${lang}`] || project.description,
+      category: project.category,
+      status: project.status,
+      budget: project.budget,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      image: project.image,
+      progress: project.progress,
+      isActive: project.isActive,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt
+    }));
+
     res.status(200).json({
       success: true,
-      data: projects,
+      data: localizedProjects,
       totalPages: Math.ceil(total / limit),
       currentPage: page,
       total,
@@ -33,15 +50,33 @@ const getProjects = async (req, res) => {
 
 const getProjectById = async (req, res) => {
   try {
+    const { lang = 'en' } = req.query;
     const project = await Project.findById(req.params.id);
 
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
+    // Localize the response based on language
+    const localizedProject = {
+      _id: project._id,
+      title: project[`title_${lang}`] || project.title,
+      description: project[`description_${lang}`] || project.description,
+      category: project.category,
+      status: project.status,
+      budget: project.budget,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      image: project.image,
+      progress: project.progress,
+      isActive: project.isActive,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt
+    };
+
     res.status(200).json({
       success: true,
-      data: project,
+      data: localizedProject,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -52,8 +87,8 @@ const createProject = async (req, res) => {
   try {
     const projectData = req.body;
 
-    if (req.files && req.files.length > 0) {
-      projectData.images = req.files.map(file => `/uploads/${file.filename}`);
+    if (req.file) {
+      projectData.image = `/uploads/${req.file.filename}`;
     }
 
     const project = await Project.create(projectData);
@@ -71,8 +106,8 @@ const updateProject = async (req, res) => {
   try {
     const updateData = req.body;
 
-    if (req.files && req.files.length > 0) {
-      updateData.images = req.files.map(file => `/uploads/${file.filename}`);
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
     }
 
     const project = await Project.findByIdAndUpdate(

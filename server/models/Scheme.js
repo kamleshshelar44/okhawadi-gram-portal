@@ -5,9 +5,21 @@ const schemeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title_mr: {
+    type: String,
+  },
+  title_hi: {
+    type: String,
+  },
   description: {
     type: String,
     required: true,
+  },
+  description_mr: {
+    type: String,
+  },
+  description_hi: {
+    type: String,
   },
   category: {
     type: String,
@@ -17,7 +29,22 @@ const schemeSchema = new mongoose.Schema({
   eligibility: {
     type: String,
   },
+  eligibility_mr: {
+    type: String,
+  },
+  eligibility_hi: {
+    type: String,
+  },
   benefits: {
+    type: String,
+  },
+  benefits_mr: {
+    type: String,
+  },
+  benefits_hi: {
+    type: String,
+  },
+  image: {
     type: String,
   },
   documents: [{

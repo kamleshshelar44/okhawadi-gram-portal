@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/', getGallery);
 router.get('/:id', getGalleryById);
-router.post('/', auth, upload.single('file'), createGalleryItem);
+router.post('/', upload.single('file'), createGalleryItem);
 router.put('/:id', auth, upload.single('file'), updateGalleryItem);
 router.delete('/:id', auth, deleteGalleryItem);
 

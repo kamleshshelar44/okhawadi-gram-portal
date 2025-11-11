@@ -90,7 +90,7 @@ const Home = () => {
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
               <Users className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {villageInfo?.population || '800'}
+                {villageInfo?.population || '439'}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {t('home.population')}
@@ -117,7 +117,7 @@ const Home = () => {
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
               <Droplets className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {villageInfo?.waterSources?.length || 3}
+                {villageInfo?.waterSources?.length || 2}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {t('home.waterSources')}
@@ -135,7 +135,7 @@ const Home = () => {
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center shadow-md">
               <Award className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                12+
+                10+
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {t('home.awards')}
@@ -146,14 +146,14 @@ const Home = () => {
       </section>
 
       {/* Panchayat Contacts */}
-      <section className="py-16">
+      <section className="py-16  dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               {t('home.panchayatContacts')}
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              महत्त्वाच्या पदाधिकाऱ्यांशी संपर्क साधा
+              मा. सरपंच, मा. उपसरपंच, आणि ग्रामपंचायती सदस्या
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -251,7 +251,7 @@ const Home = () => {
       </section>
 
       {/* Photo Gallery */}
-      <section className="py-16">
+      <section className="py-16  dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <div>
@@ -273,14 +273,19 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {gallery.map((item) => (
               <div key={item._id} className="relative group overflow-hidden rounded-lg">
+                {item.type === 'image'?
                 <img
-                  src={item.url || 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400'}
+                  src={item.url}
                   alt={item.title}
                   className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                />:<video
+                  src={item.url}
+                  controls
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />}
+                {item.type === 'image' &&<div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <p className="text-white text-xs text-center px-2">{item.title}</p>
-                </div>
+                </div>}
               </div>
             ))}
           </div>
