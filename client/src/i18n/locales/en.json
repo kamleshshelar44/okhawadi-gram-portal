@@ -61,7 +61,10 @@
     "phone": "Phone",
     "map": "Map",
     "workingHours": "Working Hours",
-    "newText": "Recent Events and Important Notices"
+    "newText": "Recent Events and Important Notices",
+    "imageHeading": "Collection of Beautiful Views of the Village",
+    "villageNotice": "Participate in the development works of the Gram Panchayat",
+    "villageNoticeText": "Your valuable suggestions and cooperation are always needed for the development of our village."
   },
   "about": {
     "villageName": "Okhawadi",
@@ -183,6 +186,14 @@
     "termsOfService": "Terms of Service",
     "sitemap": "Sitemap",
     "readMore": "Read More",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "okhawadiGramPanchayat": "Okhawadi Gram Panchayat",
+    "welcomeMessage": "Welcome to Okhawadi Gram Panchayat",
+    "Jawali": "Jawali",
+    "Satara": "Satara",
+    "Maharashtra": "Maharashtra",
+    "India": "India",
+    "pinCodeNumber": "415012",
+    "contactNo":"+91 98765 43210"
   }
 }

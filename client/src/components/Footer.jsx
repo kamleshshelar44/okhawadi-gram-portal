@@ -100,17 +100,17 @@ const Footer = () => {
                 <MapPin className="w-5 h-5 text-primary-500 mt-0.5" />
                 <div>
                   <p className="text-sm text-gray-300">
-                    ओखवडी ग्रामपंचायत,
+                    {t('common.okhawadiGramPanchayat')},
                     <br />
-                    जावळी, सातारा
+                    {t('common.Jawali')}, {t('common.Satara')}
                     <br />
-                    महाराष्ट्र - 415012
+                    {t('common.Maharashtra')} - {t('common.pinCodeNumber')}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-primary-500" />
-                <p className="text-sm text-gray-300">+91 98765 43210</p>
+                <p className="text-sm text-gray-300">{t('common.contactNo')}</p>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-primary-500" />

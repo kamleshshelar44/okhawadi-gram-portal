@@ -259,7 +259,7 @@ const Home = () => {
                 {t('home.photoGallery')}
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
-                गावाच्या सुंदर दृश्यांचा संग्रह
+                {t('home.imageHeading')}
               </p>
             </div>
             <Link
@@ -296,10 +296,10 @@ const Home = () => {
       <section className="py-16 bg-primary-600">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            ग्रामपंचायतेच्या विकास कामांत सहभागी व्हा
+            {t('home.villageNotice')}
           </h2>
           <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-            आमच्या गावाच्या विकासासाठी आपले मौल्यवान सूचन आणि सहकार्य आपल्याला नेहमीच लागते.
+            {t('home.villageNoticeText')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
