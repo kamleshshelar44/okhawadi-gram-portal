@@ -41,6 +41,7 @@
     "schools": "शाळा",
     "facilities": "सुविधा",
     "panchayatContacts": "ग्रामपंचायत पदाधिकारी",
+    "panchayatContactstext":"मा. सरपंच, मा. उपसरपंच, आणि ग्रामपंचायती सदस्या",
     "achievements": "उपलब्ध्या",
     "timeline": "विकास कालक्रम",
     "awards": "पुरस्कार",
@@ -59,7 +60,8 @@
     "email": "ईमेल",
     "phone": "फोन",
     "map": "नकाशा",
-    "workingHours": "कार्यावळ"
+    "workingHours": "कार्यावळ",
+    "newText":"अलीकडील घडामोडी आणि महत्त्वाच्या सूचना"
   },
   "about": {
     "villageName": "ओखवडी (ओखवडी)",

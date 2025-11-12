@@ -41,6 +41,7 @@
     "schools": "Schools",
     "facilities": "Facilities",
     "panchayatContacts": "Gram Panchayat Officers",
+    "panchayatContactstext": "Sarpanch, Up-Sarpanch, and Gram Panchayat Members",
     "achievements": "Achievements",
     "timeline": "Development Timeline",
     "awards": "Awards",
@@ -59,7 +60,8 @@
     "email": "Email",
     "phone": "Phone",
     "map": "Map",
-    "workingHours": "Working Hours"
+    "workingHours": "Working Hours",
+    "newText": "Recent Events and Important Notices"
   },
   "about": {
     "villageName": "Okhawadi",

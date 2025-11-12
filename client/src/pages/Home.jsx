@@ -153,7 +153,7 @@ const Home = () => {
               {t('home.panchayatContacts')}
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              मा. सरपंच, मा. उपसरपंच, आणि ग्रामपंचायती सदस्या
+              {t('home.panchayatContactstext')}
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -201,7 +201,7 @@ const Home = () => {
                 {t('home.latestNews')}
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
-                अलीकडील घडामोडी आणि महत्त्वाच्या सूचना
+                {t('home.newText')}
               </p>
             </div>
             <Link

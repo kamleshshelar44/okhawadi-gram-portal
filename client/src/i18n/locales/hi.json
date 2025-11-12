@@ -41,6 +41,7 @@
     "schools": "स्कूल",
     "facilities": "सुविधाएँ",
     "panchayatContacts": "ग्राम पंचायत अधिकारी",
+    "panchayatContactstext": "मा. सरपंच, मा. उपसरपंच, और ग्राम पंचायत सदस्य",
     "achievements": "उपलब्धियाँ",
     "timeline": "विकास समयरेखा",
     "awards": "पुरस्कार",
@@ -59,7 +60,8 @@
     "email": "ईमेल",
     "phone": "फोन",
     "map": "नक्शा",
-    "workingHours": "कार्य समय"
+    "workingHours": "कार्य समय",
+    "newText": "हाल की घटनाएँ और महत्वपूर्ण सूचनाएँ"
   },
   "about": {
     "villageName": "ओखवडी",
