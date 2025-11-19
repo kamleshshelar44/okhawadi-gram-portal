@@ -1,5 +1,38 @@
 const mongoose = require('mongoose');
 
+const schoolSchema = new mongoose.Schema({
+  name_en: String,
+  name_mr: String,
+  name_hi: String,
+  type_en: String,
+  type_mr: String,
+  type_hi: String
+}, { _id: false });
+
+const hospitalSchema = new mongoose.Schema({
+  name_en: String,
+  name_mr: String,
+  name_hi: String,
+  type_en: String,
+  type_mr: String,
+  type_hi: String
+}, { _id: false });
+
+const waterSourceSchema = new mongoose.Schema({
+  name_en: String,
+  name_mr: String,
+  name_hi: String
+}, { _id: false });
+
+const festivalSchema = new mongoose.Schema({
+  name_en: String,
+  name_mr: String,
+  name_hi: String,
+  description_en: String,
+  description_mr: String,
+  description_hi: String
+}, { _id: false });
+
 const villageInfoSchema = new mongoose.Schema({
   // Basic village information with multilingual support
   name_en: { type: String, required: true },
@@ -87,20 +120,90 @@ const villageInfoSchema = new mongoose.Schema({
 
   // Infrastructure
   totalHouses: { type: Number, default: 0 },
-  schools: { type: Number, default: 0 },
-  hospitals: { type: Number, default: 0 },
+  schools: [schoolSchema],
+  hospitals: [hospitalSchema],
+  waterSources: [waterSourceSchema],
 
   // Economy
   mainOccupation_en: { type: String },
   mainOccupation_mr: { type: String },
   mainOccupation_hi: { type: String },
 
-  // Festivals and traditions
+  // Festivals and traditions (both array of objects and string support)
+  festivals: [festivalSchema],
   festivals_en: { type: String },
   festivals_mr: { type: String },
   festivals_hi: { type: String },
+
+  // Homepage slider images (max 4 images)
+  sliderImages: [
+    {
+      url: { type: String, required: true },
+      caption_en: { type: String },
+      caption_mr: { type: String },
+      caption_hi: { type: String },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
 }, {
   timestamps: true,
+});
+
+// Pre-save middleware to handle flexible data structures
+villageInfoSchema.pre('save', function(next) {
+  const doc = this;
+
+  // Handle schools - if number sent, convert to array with default objects
+  if (typeof doc.schools === 'number') {
+    const schoolCount = doc.schools;
+    doc.schools = [];
+    for (let i = 0; i < schoolCount; i++) {
+      doc.schools.push({
+        name_en: `School ${i + 1}`,
+        name_mr: `शाळा ${i + 1}`,
+        name_hi: `स्कूल ${i + 1}`,
+        type_en: 'Educational Institution',
+        type_mr: 'शैक्षणिक संस्था',
+        type_hi: 'शैक्षणिक संस्थान'
+      });
+    }
+  }
+
+  // Handle hospitals - if number sent, convert to array with default objects
+  if (typeof doc.hospitals === 'number') {
+    const hospitalCount = doc.hospitals;
+    doc.hospitals = [];
+    for (let i = 0; i < hospitalCount; i++) {
+      doc.hospitals.push({
+        name_en: `Healthcare Center ${i + 1}`,
+        name_mr: `आरोग्य केंद्र ${i + 1}`,
+        name_hi: 'स्वास्थ्य केंद्र ${i + 1}',
+        type_en: 'Medical Facility',
+        type_mr: 'वैद्यकीय सुविधा',
+        type_hi: 'चिकित्सा सुविधा'
+      });
+    }
+  }
+
+  // Handle waterSources - if array of strings sent, convert to objects
+  if (doc.waterSources && Array.isArray(doc.waterSources) && doc.waterSources.length > 0) {
+    if (typeof doc.waterSources[0] === 'string') {
+      doc.waterSources = doc.waterSources.map(source => ({
+        name_en: source,
+        name_mr: source,
+        name_hi: source
+      }));
+    }
+  }
+
+  // Ensure arrays exist
+  if (!doc.schools) doc.schools = [];
+  if (!doc.hospitals) doc.hospitals = [];
+  if (!doc.waterSources) doc.waterSources = [];
+  if (!doc.festivals) doc.festivals = [];
+  if (!doc.sliderImages) doc.sliderImages = [];
+
+  next();
 });
 
 module.exports = mongoose.model('VillageInfo', villageInfoSchema);

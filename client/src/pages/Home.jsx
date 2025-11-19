@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
 import { Calendar, MapPin, Users, BookOpen, Droplets, School, Award, Clock, ArrowRight, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import api from '../utils/axios';
 
@@ -12,16 +13,40 @@ const Home = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Slider settings
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    fade: false,
+    arrows: true,
+    adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          dots: true
+        }
+      }
+    ]
+  };
+
   useEffect(() => {
     fetchHomeData();
-  }, []);
+  }, [localStorage.getItem('i18nextLng')]);
 
   const fetchHomeData = async () => {
     try {
+      const lang = localStorage.getItem('i18nextLng') || 'en';
       const [villageRes, newsRes, galleryRes, contactsRes] = await Promise.all([
-        api.get('/village'),
-        api.get('/news?limit=3'),
-        api.get('/gallery?limit=6'),
+        api.get(`/village?lang=${lang}`),
+        api.get(`/news?limit=3&lang=${lang}`),
+        api.get(`/gallery?limit=6`),
         api.get('/contacts'),
       ]);
 
@@ -46,41 +71,94 @@ const Home = () => {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative h-[500px] bg-gradient-to-r from-primary-700 to-primary-900">
-        <div className="absolute inset-0 bg-black opacity-40"></div>
-        <div className="absolute inset-0">
-          <img
-            src="../../../Images/ok.jpg"
-            alt="Village Temple"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="relative container mx-auto px-4 h-full flex items-center">
-          <div className="max-w-3xl text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {t('home.welcome')}
-            </h1>
-            <p className="text-xl mb-8 leading-relaxed">
-              {villageInfo?.description || t('home.villageIntro')}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/about"
-                className="bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
-              >
-                {t('navigation.about')}
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-              <Link
-                to="/contact"
-                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-700 transition-colors"
-              >
-                {t('home.contactUs')}
-              </Link>
+      {/* Hero Slider Section */}
+      <section className="relative h-[500px] overflow-hidden">
+        {villageInfo?.sliderImages && villageInfo.sliderImages.length > 0 ? (
+          <>
+            {/* Slider Images Layer - z-0 */}
+            <Slider {...sliderSettings} className="h-full">
+              {villageInfo.sliderImages.map((image) => (
+                <div key={image._id} className="relative h-[500px]">
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}${image.url}`}
+                    alt={image.caption || t('home.villageName')}
+                    className="w-full h-full object-cover z-0"
+                  />
+                </div>
+              ))}
+            </Slider>
+
+            {/* Gradient Overlay Layer - z-10 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40 z-10"></div>
+
+            {/* Text Overlay Layer - z-20 - Fixed Position Outside Slider */}
+            <div className="absolute inset-0 z-20 flex items-center">
+              <div className="container mx-auto px-4">
+                <div className="max-w-3xl text-white">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                    {t('home.welcome')}
+                  </h1>
+                  <p className="text-xl mb-8 leading-relaxed">
+                    {villageInfo?.description || t('home.villageIntro')}
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Link
+                      to="/about"
+                      className="bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
+                    >
+                      {t('navigation.about')}
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Link>
+                    <Link
+                      to="/contact"
+                      className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-700 transition-colors"
+                    >
+                      {t('home.contactUs')}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          // Fallback to static hero if no images uploaded
+          <div className="relative h-[500px]">
+            {/* Background Image - z-0 */}
+            <img
+              src="../../../Images/ok.jpg"
+              alt="Village Temple"
+              className="absolute inset-0 w-full h-full object-cover z-0"
+            />
+            {/* Background Gradient - z-10 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-700 to-primary-900/90 z-10"></div>
+            {/* Content - z-20 */}
+            <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
+              <div className="max-w-3xl text-white">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                  {t('home.welcome')}
+                </h1>
+                <p className="text-xl mb-8 leading-relaxed">
+                  {villageInfo?.description || t('home.villageIntro')}
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    to="/about"
+                    className="bg-white text-primary-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
+                  >
+                    {t('navigation.about')}
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-700 transition-colors"
+                  >
+                    {t('home.contactUs')}
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* Village Stats */}

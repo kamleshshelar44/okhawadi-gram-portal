@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -9,14 +9,23 @@ const AdminVillageInfo = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [sliderImages, setSliderImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageCaptions, setImageCaptions] = useState({
+    en: '',
+    mr: '',
+    hi: ''
+  });
 
   // Fetch village information from backend
   const fetchVillageInfo = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/village/admin`);
+      const response = await api.get('/village/admin');
       if (response.data.success) {
         setFormData(response.data.data);
+        setSliderImages(response.data.data.sliderImages || []);
       }
     } catch (error) {
       console.error('Error fetching village info:', error);
@@ -51,7 +60,7 @@ const AdminVillageInfo = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/village`, formData);
+      const response = await api.put('/village', formData);
       if (response.data.success) {
         toast.success('Village information updated successfully');
         setFormData(response.data.data);
@@ -68,7 +77,7 @@ const AdminVillageInfo = () => {
   const handleReset = async () => {
     if (window.confirm('Are you sure you want to reset all village information? This action cannot be undone.')) {
       try {
-        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/village`);
+        const response = await api.delete('/village');
         if (response.data.success) {
           toast.success('Village information reset successfully');
           await fetchVillageInfo();
@@ -77,6 +86,104 @@ const AdminVillageInfo = () => {
         console.error('Error resetting village info:', error);
         toast.error('Failed to reset village information');
       }
+    }
+  };
+
+  // Handle image file selection
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        setImageFile(file);
+      } else {
+        toast.error('Please select an image file');
+      }
+    }
+  };
+
+  // Handle caption changes
+  const handleCaptionChange = (lang, value) => {
+    setImageCaptions(prev => ({
+      ...prev,
+      [lang]: value
+    }));
+  };
+
+  // Upload image
+  const handleImageUpload = async () => {
+    if (!imageFile) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    if (sliderImages.length >= 4) {
+      toast.error('Maximum 4 images allowed in slider');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('image', imageFile);
+      formDataToSend.append('caption_en', imageCaptions.en);
+      formDataToSend.append('caption_mr', imageCaptions.mr);
+      formDataToSend.append('caption_hi', imageCaptions.hi);
+
+      const response = await api.post('/village/slider/upload', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.data.success) {
+        toast.success('Image uploaded successfully');
+        setSliderImages(response.data.data);
+        setImageFile(null);
+        setImageCaptions({ en: '', mr: '', hi: '' });
+        // Reset file input
+        document.getElementById('image-input').value = '';
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error(error.response?.data?.message || 'Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Delete image
+  const handleDeleteImage = async (imageId) => {
+    if (window.confirm('Are you sure you want to delete this image?')) {
+      try {
+        const response = await api.delete(`/village/slider/${imageId}`);
+        if (response.data.success) {
+          toast.success('Image deleted successfully');
+          setSliderImages(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error deleting image:', error);
+        toast.error(error.response?.data?.message || 'Failed to delete image');
+      }
+    }
+  };
+
+  // Update image caption
+  const handleUpdateCaption = async (imageId, lang, value) => {
+    try {
+      const response = await api.put(`/village/slider/${imageId}/caption`, {
+        [`caption_${lang}`]: value
+      });
+
+      if (response.data.success) {
+        const updatedImages = sliderImages.map(img =>
+          img._id === imageId ? response.data.data : img
+        );
+        setSliderImages(updatedImages);
+        toast.success('Caption updated successfully');
+      }
+    } catch (error) {
+      console.error('Error updating caption:', error);
+      toast.error(error.response?.data?.message || 'Failed to update caption');
     }
   };
 
@@ -604,6 +711,119 @@ const AdminVillageInfo = () => {
               placeholder={t('enterFestivals', 'Enter festivals information')}
             />
           </div>
+        </div>
+
+        {/* Slider Image Management */}
+        <div className="mt-8 border-t pt-8">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+            {t('homepageSlider', 'Homepage Slider Images')} ({sliderImages.length}/4)
+          </h3>
+
+          {/* Upload New Image */}
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+            <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              {t('uploadNewImage', 'Upload New Image')}
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('selectImage', 'Select Image')}
+                </label>
+                <input
+                  id="image-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                />
+                {imageFile && (
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    {t('selectedFile', 'Selected file')}: {imageFile.name}
+                  </p>
+                )}
+              </div>
+
+              {/* Captions for the new image */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {t('imageCaptions', 'Image Captions')}
+                </label>
+                <div className="space-y-2">
+                  {['en', 'mr', 'hi'].map((lang) => (
+                    <input
+                      key={lang}
+                      type="text"
+                      placeholder={t(`caption_${lang}`, `Caption in ${lang.toUpperCase()}`)}
+                      value={imageCaptions[lang]}
+                      onChange={(e) => handleCaptionChange(lang, e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleImageUpload}
+              disabled={uploading || !imageFile || sliderImages.length >= 4}
+              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {uploading ? t('uploading', 'Uploading...') : t('uploadImage', 'Upload Image')}
+            </button>
+          </div>
+
+          {/* Existing Images */}
+          {sliderImages.length > 0 && (
+            <div>
+              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                {t('existingImages', 'Existing Images')}
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {sliderImages.map((image) => (
+                  <div key={image._id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                    <div className="relative">
+                      <img
+                        src={`${import.meta.env.VITE_API_URL}${image.url}`}
+                        alt={image[`caption_${activeTab}`] || 'Slider image'}
+                        className="w-full h-48 object-cover"
+                      />
+                      <button
+                        onClick={() => handleDeleteImage(image._id)}
+                        className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                        title={t('deleteImage', 'Delete Image')}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="p-4">
+                      <div className="space-y-2">
+                        {['en', 'mr', 'hi'].map((lang) => (
+                          <div key={lang} className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-gray-500 dark:text-gray-400 w-8">
+                              {lang.toUpperCase()}:
+                            </span>
+                            <input
+                              type="text"
+                              value={image[`caption_${lang}`] || ''}
+                              onChange={(e) => handleUpdateCaption(image._id, lang, e.target.value)}
+                              placeholder={t(`caption_${lang}`, `Caption in ${lang.toUpperCase()}`)}
+                              className="flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        {t('uploadedOn', 'Uploaded on')}: {new Date(image.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
