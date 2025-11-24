@@ -144,16 +144,6 @@ const AdminLogin = () => {
               </button>
             </div>
           </form>
-
-          <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Default Login Credentials
-            </p>
-            <div className="mt-2 bg-gray-50 dark:bg-gray-700 rounded p-3 text-xs">
-              <p><strong>Email:</strong> admin@okhawadi.in</p>
-              <p><strong>Password:</strong> Admin@123</p>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}

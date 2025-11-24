@@ -19,6 +19,7 @@ const contactRoutes = require('./routes/contacts');
 const awardRoutes = require('./routes/awards');
 const schemeRoutes = require('./routes/schemes');
 const contactFormRoutes = require('./routes/contact-form');
+const contactMessageRoutes = require('./routes/contact-messages');
 
 const app = express();
 
@@ -84,6 +85,7 @@ app.use('/api/contacts', contactRoutes);
 app.use('/api/awards', awardRoutes);
 app.use('/api/schemes', schemeRoutes);
 app.use('/api/contact-form', contactFormRoutes);
+app.use('/api/contact-messages', contactMessageRoutes);
 
 // ----------------------
 // 🩺 Health Check

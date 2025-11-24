@@ -25,6 +25,7 @@ const AdminLayout = () => {
     { path: '/admin/projects', label: t('admin.projectManagement'), icon: '🏗️' },
     { path: '/admin/gallery', label: t('admin.galleryManagement'), icon: '🖼️' },
     { path: '/admin/contacts', label: t('admin.contactManagement'), icon: '📞' },
+    { path: '/admin/messages', label: 'User Messages', icon: '📩' },
     { path: '/admin/schemes', label: t('admin.schemeManagement'), icon: '📋' },
     { path: '/admin/awards', label: t('admin.awardManagement'), icon: '🏆' },
   ];

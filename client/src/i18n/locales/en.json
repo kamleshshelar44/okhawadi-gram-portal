@@ -264,5 +264,55 @@
     "India": "India",
     "pinCodeNumber": "415012",
     "contactNo":"+91 98765 43210"
+  },
+  "contact": {
+    "Contactus": "Contact Us",
+    "headerText": "Use the information below to reach out to Okhawadi Grampanchayat. We are happy to hear your feedback.",
+
+    "contactInfo": "Contact Information",
+    "phone": "Phone",
+    "phoneTime": "Monday to Friday, 10 AM to 6 PM",
+    "email": "Email",
+    "emailReply": "We try to reply within 24 hours",
+
+    "address": "Address",
+    "addressLine1": "Grampanchayat Office, Okhawadi",
+    "addressLine2": "Tal. Jawali, Dist. Satara, Maharashtra 415012",
+
+    "officeHours": "Office Hours",
+    "office1": "Monday to Friday: 10:00 AM – 6:00 PM",
+    "office2": "Saturday: 10:00 AM – 4:00 PM",
+    "office3": "Sunday: Closed",
+
+    "emergency": "Emergency Services",
+    "health": "Health Service",
+    "police": "Police Helpline",
+    "fire": "Fire Department",
+
+    "importantNumbers": "Important Contact Numbers",
+    "sarpanch": "Sarpanch",
+    "officer": "Development Officer",
+    "talathi": "Talathi",
+
+    "sendMessage": "Send Message",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "your.email@example.com",
+    "mobile": "Mobile Number",
+    "mobilePlaceholder": "Enter 10 digit mobile number",
+    "message": "Message",
+    "messagePlaceholder": "Write your message here...",
+
+    "info": "Information",
+    "info1": "Your message will be reviewed within 24 hours",
+    "info2": "Call us for more details",
+    "info3": "Use the emergency numbers for urgent services",
+
+    "submit": "Send Message",
+    "sending": "Sending...",
+
+    "success": "Your message has been sent successfully! We will contact you soon.",
+    "error": "An error occurred while sending your message. Please try again later."
   }
 }

@@ -17,13 +17,14 @@ const Home = () => {
   const sliderSettings = {
     dots: true,
     infinite: true,
-    speed: 600,
+    speed: 1200,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
-    fade: false,
+    autoplaySpeed: 4000,
+    fade: true,
     arrows: true,
+    cssEase: "linear",
     adaptiveHeight: true,
     responsive: [
       {
@@ -235,37 +236,49 @@ const Home = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {contacts.slice(0, 3).map((contact) => (
-              <div key={contact._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                    <Users className="w-8 h-8 text-gray-500 dark:text-gray-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">
-                      {contact.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {contact.position}
-                    </p>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  {contact.phone && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                      <Phone className="w-4 h-4" />
-                      <span>{contact.phone}</span>
-                    </div>
-                  )}
-                  {contact.email && (
-                    <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                      <Mail className="w-4 h-4" />
-                      <span>{contact.email}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+           {contacts.slice(0, 3).map((contact) => (
+  <div
+    key={contact._id}
+    className="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 text-center border border-gray-100 dark:border-gray-700"
+  >
+    {/* Image */}
+    <div className="flex justify-center mb-4">
+      <img
+        src={`${import.meta.env.VITE_API_URL}${contact.image}` || "https://img.icons8.com/nolan/1200/user-default.jpg"}
+        alt={contact.name}
+        className="w-40 h-40 rounded-full object-cover border-4 border-gray-200"
+      />
+    </div>
+
+    {/* Name */}
+    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+      {contact.name}
+    </h3>
+
+    {/* Position */}
+    <p className="text-sm text-blue-600 dark:text-blue-400 mt-1 font-bold">
+      {contact.position}
+    </p>
+
+    {/* Contact Details */}
+    {/* <div className="mt-4 space-y-2 text-left">
+      {contact.phone && (
+        <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-400 text-sm">
+          <Phone className="w-4 h-4" />
+          <span>{contact.phone}</span>
+        </div>
+      )}
+
+      {contact.email && (
+        <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-400 text-sm">
+          <Mail className="w-4 h-4" />
+          <span>{contact.email}</span>
+        </div>
+      )}
+    </div> */}
+  </div>
+))}
+
           </div>
         </div>
       </section>
@@ -292,38 +305,59 @@ const Home = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {news.map((item) => (
-              <article key={item._id} className="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden">
-                {item.image && (
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full">
-                      {item.category}
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {new Date(item.date).toLocaleDateString('mr-IN')}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                    {item.content}
-                  </p>
-                  <Link
-                    to={`/news/${item._id}`}
-                    className="text-primary-600 hover:text-primary-700 text-sm font-semibold"
-                  >
-                    {t('common.readMore')} →
-                  </Link>
-                </div>
-              </article>
-            ))}
+  <article
+    key={item._id}
+    className="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden flex flex-col"
+  >
+    {/* Image with fallback */}
+    <div className="h-48 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+      {item.image ? (
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.src =
+              'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="16" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+          }}
+        />
+      ) : (
+        <span className="text-gray-500 text-sm">No Image</span>
+      )}
+    </div>
+
+    {/* Content */}
+    <div className="p-6 flex flex-col flex-1">
+      <div className="flex items-center space-x-2 mb-3">
+        <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full">
+          {item.category}
+        </span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          {new Date(item.date).toLocaleDateString("mr-IN")}
+        </span>
+      </div>
+
+      <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+        {item.title}
+      </h3>
+
+      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+        {item.content}
+      </p>
+
+      {/* Read More always at the bottom */}
+      <div className="mt-auto">
+        <Link
+          to={`/news/${item._id}`}
+          className="text-primary-600 hover:text-primary-700 text-sm font-semibold"
+        >
+          Read More →
+        </Link>
+      </div>
+    </div>
+  </article>
+))}
+
           </div>
         </div>
       </section>

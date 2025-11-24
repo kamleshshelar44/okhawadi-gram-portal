@@ -32,6 +32,8 @@ import Gallery from './pages/Gallery';
 import Videos from './pages/Videos';
 import Statistics from './pages/Statistics';
 import VillageMap from './pages/VillageMap';
+import ContactUs from './pages/ContactUs';
+import Contact from './pages/contact';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -41,6 +43,7 @@ import AdminNews from './pages/admin/AdminNews';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminGallery from './pages/admin/AdminGallery';
 import AdminContacts from './pages/admin/AdminContacts';
+import AdminMessages from './pages/admin/AdminMessages';
 import AdminSchemes from './pages/admin/AdminSchemes';
 import AdminAwards from './pages/admin/AdminAwards';
 
@@ -68,7 +71,8 @@ function App() {
             <Route path="departments" element={<Departments />} />
             <Route path="infrastructure" element={<Infrastructure />} />
             <Route path="schemes" element={<Schemes />} />
-            <Route path="contact" element={<AdminContacts />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="contact-us" element={<ContactUs />} />
             <Route path="budget" element={<Budget />} />
             <Route path="services" element={<Services />} />
             <Route path="forms" element={<Forms />} />
@@ -99,6 +103,7 @@ function App() {
             <Route path="projects" element={<AdminProjects />} />
             <Route path="gallery" element={<AdminGallery />} />
             <Route path="contacts" element={<AdminContacts />} />
+            <Route path="messages" element={<AdminMessages />} />
             <Route path="schemes" element={<AdminSchemes />} />
             <Route path="awards" element={<AdminAwards />} />
           </Route>

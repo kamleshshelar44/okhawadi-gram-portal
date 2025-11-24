@@ -13,6 +13,7 @@ const Footer = () => {
     { path: '/forms', label: t('navigation.forms') },
     { path: '/gallery', label: t('navigation.gallery') },
     { path: '/contact', label: t('common.contact') },
+    { path: '/contact-us', label: 'Send Message' },
   ];
 
   const services = [
